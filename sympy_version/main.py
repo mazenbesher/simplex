@@ -1,6 +1,6 @@
 from IPython.display import display
 import numpy as np
-from sympy import init_printing, symbols, Eq, var, oo, solve
+from sympy import init_printing, symbols, Eq, var, oo, solve, nsimplify
 
 # -----------------------------------------------------------------
 ### Globlas ###
@@ -28,8 +28,11 @@ def sympy_simplex(lp):
     ### create rows ###
     rows = []
     for i in range(m):
-        row = Eq(x[i + n], int(b[i]))
-        nbv = [-1 * int(A[i,j]) * x[j] for j in range(n)]
+        # bi = b[i]
+        # a = [A[i,j] for j in range(n)]
+
+        row = Eq(x[i + n], nsimplify(b[i]))
+        nbv = [-1 * nsimplify(A[i,j]) * x[j] for j in range(n)]
         for k in range(len(nbv)):
             row = Eq(row.lhs, row.rhs + nbv[k])
         rows.append(row)
@@ -82,7 +85,7 @@ def sympy_simplex(lp):
                     if nbv != eintretende:
                         new_row = new_row.subs(nbv, 0)
                 wert = solve(new_row.rhs >= 0).as_set().right
-                if wert < min_wert:
+                if wert < min_wert: # TODO remove =
                     min_wert = wert
                     min_row = row
                     verlassende = row.lhs
