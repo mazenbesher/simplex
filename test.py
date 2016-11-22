@@ -11,11 +11,20 @@ aufgabe1 = LP( # Blatt 2
     np.matrix('2; 1; 3; 0; 0; 0'),
     [4, 5, 6])
 
-vorlesung = LP(
+vorlesung = LP( # Muesli Example
     np.matrix('2 3; 4 1; 1 1'),
     np.matrix('12000; 16000; 4300'),
     np.matrix('5; 4; 0; 0; 0'),
     [3, 4, 5])
+
+kreise_example = LP( # Book Page 31
+    np.matrix('-0.5 -5.5 -2.5 9; 0.5 -1.5 -0.5 1; 1 0 0 0'),  # A
+    np.matrix('0; 0; 1'),  # b
+    np.matrix('10; -57; -9; -24; 0; 0; 0'),  # c
+    [5, 6, 7]
+)
+
+
 
 
 class TestIndexed(unittest.TestCase):
@@ -43,6 +52,10 @@ class TestSimplex(unittest.TestCase):
         self.assertEqual(x_1, 5)
         self.assertAlmostEqual(x_2, 0.83333333)
         self.assertEqual(x_3, 0)
+        
+    def test_simplexKreisen(self):
+        solu = simplex(kreise_example)[1]
+        self.assertTrue(np.all(solu[0,0:4] == [1, 0, 1, 0]))
 
 
 if __name__ == '__main__':

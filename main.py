@@ -31,6 +31,15 @@ def indexed(X, index):
 
 # Hauptfunktion
 def simplex(lp, debug=False):
+    """
+    No cycling (kreise) will happen because of the selection of the sorting of
+    the index sets (selecting the candidate with the smallest index - Bland's Rule)
+    Example see test_simplexKreisen in test.py
+
+    :param lp: LP linear program
+    :param debug: debug mode (see last condition in this function)
+    :return:
+    """
     # Variablen definieren
     A, b, c, B = lp.A, lp.b, lp.c, lp.B
     B = base_zero(B)
