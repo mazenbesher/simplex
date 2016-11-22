@@ -28,9 +28,6 @@ def sympy_simplex(lp):
     ### create rows ###
     rows = []
     for i in range(m):
-        # bi = b[i]
-        # a = [A[i,j] for j in range(n)]
-
         row = Eq(x[i + n], nsimplify(b[i]))
         nbv = [-1 * nsimplify(A[i,j]) * x[j] for j in range(n)]
         for k in range(len(nbv)):
