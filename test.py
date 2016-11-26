@@ -5,28 +5,30 @@ import numpy as np
 
 from main import *
 
-blatt2_aufgabe1 = LP(
-    np.matrix('2 0 6; -2 8 4; 3 6 5'),
-    np.matrix('10; 12; 20'),
-    np.matrix('2; 1; 3'),
-)
-
+# Random examples ----------------------------------------
 vorlesung = LP(  # Muesli Example
     np.matrix('2 3; 4 1; 1 1'),
     np.matrix('12000; 16000; 4300'),
     np.matrix('5; 4'),
 )
 
-kreise_example = LP(  # Book Page 31
-    np.matrix('-0.5 -5.5 -2.5 9; 0.5 -1.5 -0.5 1; 1 0 0 0'),  # A
-    np.matrix('0; 0; 1'),  # b
-    np.matrix('10; -57; -9; -24'),  # c
+blatt2_aufgabe1 = LP(
+    np.matrix('2 0 6; -2 8 4; 3 6 5'),
+    np.matrix('10; 12; 20'),
+    np.matrix('2; 1; 3'),
 )
 
 blatt5_aufgabe1 = LP(  # extended muesli example
     np.matrix('2 3; 4 1; 1 1; 2 1'),  # A
     np.matrix('12000; 16000; 4300; 8200'),  # b
     np.matrix('5; 4'),  # c
+)
+
+# Specific examples ----------------------------------------
+kreise_example = LP(  # Book Page 31
+    np.matrix('-0.5 -5.5 -2.5 9; 0.5 -1.5 -0.5 1; 1 0 0 0'),  # A
+    np.matrix('0; 0; 1'),  # b
+    np.matrix('10; -57; -9; -24'),  # c
 )
 
 infeasible_start = LP(  # Blatt4 Aufgabe2
