@@ -36,7 +36,7 @@ def indexed(X, index):
 # das LP keine hat (d.h. NULL is nicht zuelassig am Anfang <=> not b >= 0)
 def __first_phase(lp):
     """
-    :return: a feasibal start basis if exists or None if none exists
+    :return: a feasible start basis if exists or None if none exists
     """
     # das Hilfsproblem formulieren
     new_col = np.transpose(np.matrix(np.zeros(rows(lp.A)) - 1))
@@ -164,76 +164,18 @@ def __second_phase(B, N, AI, x, c, b):
     c = np.matrix(np.transpose(c))  # use the transpose just to make operations easier
 
     # Main-Loop
-    for counter in range(LIMIT):
-        # 1. BTRAN
-        A_B = indexed(AI, B)
-        c_B = indexed(c, B)
-        ys = np.matrix(
-            np.transpose(
-                np.dot(c_B, inv(A_B))
-            )
-        )
-
-        # 2. Pricing
-        c_N = indexed(c, N)
-        A_N = indexed(AI, N)
-        cs_N = np.subtract(np.transpose(c_N), np.matrix(np.dot(np.transpose(A_N), ys)))
-        if np.all(cs_N <= 0):
-            return B, x  # Optimale Lösung gefunden
-        else:
-            for i in range(len(cs_N)):
-                if np.all(cs_N[i] > 0):
-                    j = N[i]
-                    break
-
-        # 3. FTRAN
-        A_j = indexed(AI, [j])
-        w = np.matrix(np.dot(
-            inv(A_B), A_j
-        ))
-
-        # 4. Ratio-Test
-        if np.all(w <= 0):
-            return None # unbeschränkt / unbounded
-        else:
-            arr = []
-            for i in range(len(B)):
-                k = B[i]
-                x_k = x[0, k]
-                w_k = w[i, 0]
-                if (w_k > 0): arr.append(((x_k / w_k), k))
-            t_star, i = min(arr)
-
-        # 5. Update
-        x_B = np.transpose(indexed(x, B))
-        B_pointer = 0
-        for l in range(cols(x)):
-            if l in B:
-                x[0, l] = x_B[B_pointer, 0] - (t_star * w[B_pointer, 0])
-                B_pointer += 1
-
-        x[0, j] = t_star
-
-        B.remove(i)
-        B.append(j)
-        B.sort()
-
-        N.remove(j)
-        N.append(i)
-        N.sort()
-
-        counter += 1
+    return __simplex_main_loop(AI, B, N, c, x)
 
 # Hauptfunktion
-def simplex(lp, debug=False):
+def simplex(lp):
     """
     No cycling (kreisen) will happen because of the sorting of the index
      sets (selecting the candidate with the smallest index - Bland's Rule)
     Example see test_simplexKreisen in test.py
 
     :param lp: LP linear program (see LP class)
-    :param debug: debug mode (see last condition in this function)
-    :return:
+    :return: None if no optimal feasible solution otherwise (B, x)
+        where is the optimal Basis solution and x is the solution
     """
     # Variablen definieren
     A, b, c = lp.A, lp.b, lp.c
@@ -264,6 +206,10 @@ def simplex(lp, debug=False):
             B_pointer += 1
 
     # Main-Loop
+    return __simplex_main_loop(AI, B, N, c, x)
+
+# Hilfsfunktion
+def __simplex_main_loop(AI, B, N, c, x):
     for counter in range(LIMIT):
         # 1. BTRAN
         A_B = indexed(AI, B)
@@ -294,7 +240,7 @@ def simplex(lp, debug=False):
 
         # 4. Ratio-Test
         if np.all(w <= 0):
-            return "unbounded"  # unbeschränkt
+            return None  # unbounded / unbeschränkt
         else:
             arr = []
             for i in range(len(B)):
@@ -323,11 +269,3 @@ def simplex(lp, debug=False):
         N.sort()
 
         counter += 1
-
-        if debug:
-            print("{}, x = {}, B = {}, N = {}".format(
-                counter, x,
-                # convert Basis und Nichtbasis to one-based
-                [i + 1 for i in B],
-                [i + 1 for i in N]
-            ))
