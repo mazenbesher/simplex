@@ -34,7 +34,7 @@ def indexed(X, index):
 
 # Hilfsfunktion, sucht nach einem zulaessigen Startbasisloesung falls
 # das LP keine hat (d.h. NULL is nicht zuelassig am Anfang <=> not b >= 0)
-def first_phase(lp):
+def __first_phase(lp):
     """
     :return: a feasibal start basis if exists or None if none exists
     """
@@ -108,7 +108,7 @@ def first_phase(lp):
                 # convert B, N to zero base
                 N = [i - 1 for i in N]
                 B = [i - 1 for i in B]
-                return second_phase(B, N, AI, x, lp.c, b)
+                return __second_phase(B, N, AI, x, lp.c, b)
         else:
             for i in range(len(cs_N)):
                 if np.all(cs_N[i] > 0):
@@ -159,7 +159,7 @@ def first_phase(lp):
         N.sort()
 
 # Hilfsfunktion, simplex nach der 1. Phase
-def second_phase(B, N, AI, x, c, b):
+def __second_phase(B, N, AI, x, c, b):
     c = np.concatenate((c, np.transpose(np.matrix(np.zeros(rows(b))))), axis=0)  # extend c for the slack variables
     c = np.matrix(np.transpose(c))  # use the transpose just to make operations easier
 
@@ -249,7 +249,7 @@ def simplex(lp, debug=False):
         B = [cols(A) + i for i in range(rows(A))]
     else:
         # we need to search for a feasible basis
-        return first_phase(lp)
+        return __first_phase(lp)
 
     # 0. Init
     A_B = indexed(AI, B)
