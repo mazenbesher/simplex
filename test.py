@@ -6,7 +6,7 @@ import numpy as np
 from main import *
 
 # Random examples ----------------------------------------
-vorlesung = LP(  # Muesli Example
+vorlesung_muesli = LP(  # Muesli Example
     np.matrix('2 3; 4 1; 1 1'),
     np.matrix('12000; 16000; 4300'),
     np.matrix('5; 4'),
@@ -74,8 +74,8 @@ class TestSimplexSpecialCases(unittest.TestCase):
 
 
 class TestSimplexRandomExamples(unittest.TestCase):
-    def test_simplexVorlesung(self):
-        solu = simplex(vorlesung)[1]
+    def test_simplexVorlesungMuesli(self):
+        solu = simplex(vorlesung_muesli)[1]
         x_1, x_2 = int(solu[0, 0]), int(solu[0, 1])
         self.assertEqual(x_1, 3900)
         self.assertEqual(x_2, 400)
