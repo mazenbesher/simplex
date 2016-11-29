@@ -278,3 +278,5 @@ def __first_phase(lp):
         N.remove(j)
         N.append(i)
         N.sort()
+
+        counter += 1

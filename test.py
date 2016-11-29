@@ -65,8 +65,8 @@ class TestSimplexSpecialCases(unittest.TestCase):
         # requires 2.Phase Simplex
         solu = simplex(infeasible_start)[1]
         x_1, x_2 = solu[0, 0], solu[0, 1]
-        self.assertEqual(x_1, 12)
-        self.assertEqual(x_2, 6)
+        self.assertEqual(round(x_1), 12)
+        self.assertEqual(round(x_2), 6)
 
     def test_simplexUnbounden(self):
         # requires 2.Phase Simplex

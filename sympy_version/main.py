@@ -82,7 +82,7 @@ def sympy_simplex(lp):
                     if nbv != eintretende:
                         new_row = new_row.subs(nbv, 0)
                 wert = solve(new_row.rhs >= 0).as_set().right
-                if wert < min_wert: # TODO remove =
+                if wert < min_wert:
                     min_wert = wert
                     min_row = row
                     verlassende = row.lhs

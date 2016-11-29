@@ -27,7 +27,6 @@ class TestSimplex(unittest.TestCase):
         self.assertEqual(ziel, Eq(z, -7*x3/3 - 3*x4/4 - x6/6 + 65/6))
 
     def test_simplexFractionsAndKreisen(self):
-        # TODO: NOT WORKING EXAMPLE
         # because of the fractions and int in lines 31, 32 in main.py
         ziel = sympy_simplex(kreise_example)[1]
         self.assertEqual(ziel.rhs.as_coefficients_dict()[1], 1) # Zielfunktionswert = 1
